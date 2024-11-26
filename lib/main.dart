@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:platzi_recipe_book/screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,13 +22,27 @@ class RecipeBook extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Libro de Recetas',
-          style: TextStyle(color: Colors.white),
+    return DefaultTabController(
+      length: 1,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Libro de Recetas',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.orange,
+          bottom: TabBar(
+              indicatorColor: Colors.white,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white,
+              tabs: [
+                Tab(
+                  icon: Icon(Icons.home),
+                  text: 'Home',
+                )
+              ]),
         ),
-        backgroundColor: Colors.orange,
+        body: TabBarView(children: [HomeScreen()]),
       ),
     );
   }
