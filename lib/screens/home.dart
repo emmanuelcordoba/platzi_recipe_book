@@ -6,9 +6,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: <Widget>[
-        _RecipesCard(context),
-        _RecipesCard(context)],),
+      body: Column(
+        children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
+      ),
     );
   }
 
@@ -22,13 +22,14 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Container(
-                height: 125,
-                width: 100,
-                decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(12)
-                )
-              ),
+                  height: 125,
+                  width: 100,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image(
+                        image: AssetImage('assets/images/Perfil-LinkedIn-E.jpg'),
+                        fit: BoxFit.fitHeight,
+                      ))),
               SizedBox(
                 width: 26,
               ),
@@ -36,15 +37,23 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Milanesa Napolitana', style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),),
-                  SizedBox(height: 4,),
+                  Text(
+                    'Milanesa Napolitana',
+                    style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
                   Container(
                     height: 2,
                     width: 150,
                     color: Colors.orange,
                   ),
-                  SizedBox(height: 4,),
-                  Text('Emmanuel Córdoba', style: TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text('Emmanuel Córdoba',
+                      style: TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
                 ],
               )
             ],
