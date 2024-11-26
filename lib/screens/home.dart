@@ -9,7 +9,25 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
+        child: Icon(Icons.add, color: Colors.white,),
+        onPressed: () {
+          _showBottom(context);
+        },
+      ),
     );
+  }
+
+  Future<void> _showBottom(BuildContext context){
+    return showModalBottomSheet(
+      context: context, 
+      builder: (context) => Container(
+        height: 500,
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        child: RecipeForm(),
+      ));
   }
 
   Widget _RecipesCard(BuildContext context) {
@@ -59,6 +77,50 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class RecipeForm extends StatelessWidget {
+  const RecipeForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Form(
+        //key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Nueva Receta', 
+            style: TextStyle(
+              color: Colors.orange,
+              fontSize: 24
+            ),),
+            SizedBox(height: 16),
+            _buildTextField(label: 'Nombre')
+          ],
+        ),),
+    );
+  }
+
+  Widget _buildTextField({required String label}) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          fontFamily: 'Quicksand',
+          color: Colors.orange
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(10)
+        )
       ),
     );
   }
