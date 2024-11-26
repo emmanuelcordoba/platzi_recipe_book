@@ -100,7 +100,13 @@ class RecipeForm extends StatelessWidget {
               fontSize: 24
             ),),
             SizedBox(height: 16),
-            _buildTextField(label: 'Nombre')
+            _buildTextField(label: 'Nombre'),
+            SizedBox(height: 16),
+            _buildTextField(label: 'Autor'),
+            SizedBox(height: 16),
+            _buildTextField(label: 'URL Imagen'),
+            SizedBox(height: 16),
+            _buildTextAreaField(label: 'Receta'),
           ],
         ),),
     );
@@ -109,6 +115,29 @@ class RecipeForm extends StatelessWidget {
   Widget _buildTextField({required String label}) {
     return TextFormField(
       decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          fontFamily: 'Quicksand',
+          color: Colors.orange
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(10)
+        )
+      ),
+    );
+  }
+
+  Widget _buildTextAreaField({required String label}) {
+    return TextField(
+      minLines: 4,
+      maxLines: 4,
+      keyboardType: TextInputType.multiline,
+      decoration: InputDecoration(
+        alignLabelWithHint: true,
         labelText: label,
         labelStyle: TextStyle(
           fontFamily: 'Quicksand',
