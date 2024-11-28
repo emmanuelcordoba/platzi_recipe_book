@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:platzi_recipe_book/screens/recipe_detail.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -36,50 +37,55 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _RecipesCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 125,
-        child: Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-                  height: 125,
-                  width: 100,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image(
-                        image: AssetImage('assets/images/Perfil-LinkedIn-E.jpg'),
-                        fit: BoxFit.fitHeight,
-                      ))),
-              SizedBox(
-                width: 26,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Milanesa Napolitana',
-                    style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Container(
-                    height: 2,
-                    width: 150,
-                    color: Colors.orange,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text('Emmanuel Córdoba',
-                      style: TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
-                ],
-              )
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeName: 'Milanesa Napolitana')));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 125,
+          child: Card(
+            child: Row(
+              children: <Widget>[
+                Container(
+                    height: 125,
+                    width: 100,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image(
+                          image: AssetImage('assets/images/Perfil-LinkedIn-E.jpg'),
+                          fit: BoxFit.fitHeight,
+                        ))),
+                SizedBox(
+                  width: 26,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Milanesa Napolitana',
+                      style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Container(
+                      height: 2,
+                      width: 150,
+                      color: Colors.orange,
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text('Emmanuel Córdoba',
+                        style: TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
