@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        title: 'Hola Mundo',
+        title: 'Libro de Recetas',
         home: RecipeBook(),
         debugShowCheckedModeBanner: false);
   }

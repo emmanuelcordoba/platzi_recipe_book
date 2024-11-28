@@ -19,15 +19,20 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showBottom(BuildContext context){
-    return showModalBottomSheet(
-      context: context, 
-      builder: (context) => Container(
-        height: 500,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: RecipeForm(),
-      ));
+  Future<void> _showBottom(BuildContext context) {    
+    return showModalBottomSheet(      
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom,),
+        child: Container( 
+          height: 500,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.white,
+          child: const RecipeForm(),
+        ),        
+      ),    
+    );  
   }
 
   Widget _RecipesCard(BuildContext context) {
@@ -87,10 +92,17 @@ class RecipeForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController _recipeName = TextEditingController();
+    final TextEditingController _recipeAuthor = TextEditingController();
+    final TextEditingController _recipeImg = TextEditingController();
+    final TextEditingController _recipeDescription = TextEditingController();
+
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Form(
-        //key: _formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,43 +111,87 @@ class RecipeForm extends StatelessWidget {
               color: Colors.orange,
               fontSize: 24
             ),),
-            SizedBox(height: 16),
-            _buildTextField(label: 'Nombre'),
-            SizedBox(height: 16),
-            _buildTextField(label: 'Autor'),
-            SizedBox(height: 16),
-            _buildTextField(label: 'URL Imagen'),
-            SizedBox(height: 16),
-            _buildTextAreaField(label: 'Receta'),
+            SizedBox(height: 8),
+            _buildTextField(
+              label: 'Nombre',
+              controller: _recipeName , 
+              validador: (value) {
+                if(value == null || value.isEmpty){
+                  return 'Por favor ingrese el nombre de la receta';
+                }
+                return null;
+              }
+            ),
+            SizedBox(height: 8),
+            _buildTextField(
+              label: 'Autor',
+              controller: _recipeAuthor,               
+              validador: (value) {
+                if(value == null || value.isEmpty){
+                  return 'Por favor ingrese el autor de la receta';
+                }
+                return null;
+              }
+            ),
+            SizedBox(height: 8),
+            _buildTextField(
+              label: 'URL Imagen',
+              controller: _recipeImg,
+              validador: (value) {
+                if(value == null || value.isEmpty){
+                  return 'Por favor ingrese la URL de la Imagen de la receta';
+                }
+                return null;
+              }
+            ),
+            SizedBox(height: 8),
+            _buildTextField(
+              label: 'Receta',
+              controller: _recipeDescription, 
+              maxLines: 3,              
+              validador: (value) {
+                if(value == null || value.isEmpty){
+                  return 'Por favor ingrese la descripción de la receta';
+                }
+                return null;
+              }
+            ),
+            SizedBox(height: 8),
+            Center(
+              child: ElevatedButton(
+                onPressed: (){
+                  if(_formKey.currentState!.validate()) {
+                    Navigator.pop(context);
+                  }
+                }, 
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+                child: Text('Guardar', 
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                  )
+                )
+              ),
+            )
           ],
         ),),
     );
   }
 
-  Widget _buildTextField({required String label}) {
+  Widget _buildTextField({
+      required String label, 
+      required TextEditingController controller, 
+      required String? Function(String?) validador,
+      int maxLines = 1
+    }) {
     return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(
-          fontFamily: 'Quicksand',
-          color: Colors.orange
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10)
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-          borderRadius: BorderRadius.circular(10)
-        )
-      ),
-    );
-  }
-
-  Widget _buildTextAreaField({required String label}) {
-    return TextField(
-      minLines: 4,
-      maxLines: 4,
-      keyboardType: TextInputType.multiline,
+      maxLines: maxLines,
       decoration: InputDecoration(
         alignLabelWithHint: true,
         labelText: label,
@@ -151,6 +207,7 @@ class RecipeForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(10)
         )
       ),
+      validator: validador      
     );
-  }
+  }  
 }
