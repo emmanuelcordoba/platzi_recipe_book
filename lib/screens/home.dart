@@ -10,10 +10,22 @@ class HomeScreen extends StatelessWidget {
   Future<List<dynamic>> FetchRecipes() async {
     // localhost para Android: 10.0.2.2
     // localhost para iOS: 127.0.0.1
-    final url = Uri.parse('http://10.0.2.2:3001/recipes');
-    final response = await http.get(url);
-    final data = jsonDecode(response.body);
-    return data['recipes'];
+    final url = Uri.parse('http://localhost:3001/recipes');
+    try {
+      final response = await http.get(url);
+      if(response.statusCode == 200)
+      {
+        final data = jsonDecode(response.body);
+        return data['recipes'];
+      } else {
+        print('Error ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      print('Error in request');
+      return [];
+    }
+    
   }
 
   @override
@@ -23,11 +35,20 @@ class HomeScreen extends StatelessWidget {
         future: FetchRecipes(), 
         builder: (context, snapshop) {
           final recipes = snapshop.data ?? [];
-          return ListView.builder(
-            itemCount: recipes!.length,
-            itemBuilder: (context, index){
-              return _RecipesCard(context, recipes[index]);
-            });
+          if(snapshop.connectionState == ConnectionState.waiting)
+          {
+            return const Center(child: CircularProgressIndicator(),);
+          } else if(!snapshop.hasData || snapshop.data!.isEmpty) {
+            return const Center(child: Text('No hay recetas.'),);
+          } else {
+            return ListView.builder(
+                itemCount: recipes!.length,
+                itemBuilder: (context, index){
+                  return _RecipesCard(context, recipes[index]);
+              }
+            );
+          }
+          
         }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
