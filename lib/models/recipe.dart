@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Recipe {
   String name;
   String author;

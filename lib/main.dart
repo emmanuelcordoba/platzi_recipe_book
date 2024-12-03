@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:platzi_recipe_book/providers/recipe.dart';
 import 'package:platzi_recipe_book/screens/home.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,10 +12,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        title: 'Libro de Recetas',
-        home: RecipeBook(),
-        debugShowCheckedModeBanner: false);
+    return Builder(
+      builder: (context) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => RecipeProvider())
+          ],
+          child: const MaterialApp(
+              title: 'Libro de Recetas',
+              home: RecipeBook(),
+              debugShowCheckedModeBanner: false),
+        );
+      }
+    );
   }
 }
 

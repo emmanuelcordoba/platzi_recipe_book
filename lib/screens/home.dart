@@ -1,54 +1,34 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:platzi_recipe_book/providers/recipe.dart';
 import 'package:platzi_recipe_book/screens/recipe_detail.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Future<List<dynamic>> FetchRecipes() async {
-    // localhost para Android: 10.0.2.2
-    // localhost para iOS: 127.0.0.1
-    final url = Uri.parse('http://localhost:3001/recipes');
-    try {
-      final response = await http.get(url);
-      if(response.statusCode == 200)
-      {
-        final data = jsonDecode(response.body);
-        return data['recipes'];
-      } else {
-        print('Error ${response.statusCode}');
-        return [];
-      }
-    } catch (e) {
-      print('Error in request');
-      return [];
-    }
-    
-  }
+  
 
   @override
   Widget build(BuildContext context) {
+
+    final recipesProvider = Provider.of<RecipeProvider>(context, listen: false);
+    recipesProvider.fetchRecipes();
+
     return Scaffold(
-      body: FutureBuilder<List<dynamic>>(
-        future: FetchRecipes(), 
-        builder: (context, snapshop) {
-          final recipes = snapshop.data ?? [];
-          if(snapshop.connectionState == ConnectionState.waiting)
-          {
-            return const Center(child: CircularProgressIndicator(),);
-          } else if(!snapshop.hasData || snapshop.data!.isEmpty) {
+      body: Consumer<RecipeProvider>(
+        builder: (context, provider, child) {
+          if(provider.isLoading){
+            return const Center(child: CircularProgressIndicator());
+          } else if (provider.recipes.isEmpty) {
             return const Center(child: Text('No hay recetas.'),);
           } else {
-            return ListView.builder(
-                itemCount: recipes!.length,
+              return ListView.builder(
+                itemCount: provider.recipes.length,
                 itemBuilder: (context, index){
-                  return _RecipesCard(context, recipes[index]);
+                  return _RecipesCard(context, provider.recipes[index]);
               }
             );
-          }
-          
+          }          
         }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
@@ -79,7 +59,7 @@ class HomeScreen extends StatelessWidget {
   Widget _RecipesCard(BuildContext context, dynamic recipe) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeName: recipe['name'])));
+        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeName: recipe.name)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -94,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                     width: 100,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(recipe['image_link'], 
+                        child: Image.network(recipe.imageLink, 
                           fit: BoxFit.cover
                         )
                       )
@@ -107,8 +87,8 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      recipe['name'],
-                      style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
+                      recipe.name,
+                      style: const TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
                     ),
                     SizedBox(
                       height: 4,
@@ -121,8 +101,8 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 4,
                     ),
-                    Text(recipe['author'],
-                        style: TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
+                    Text('By ${recipe.author}',
+                        style: const TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
                   ],
                 )
               ],
