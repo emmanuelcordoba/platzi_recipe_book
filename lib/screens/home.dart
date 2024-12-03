@@ -8,7 +8,9 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Future<List<dynamic>> FetchRecipes() async {
-    final url = Uri.parse('http://localhost:3001/recipes');
+    // localhost para Android: 10.0.2.2
+    // localhost para iOS: 127.0.0.1
+    final url = Uri.parse('http://10.0.2.2:3001/recipes');
     final response = await http.get(url);
     final data = jsonDecode(response.body);
     return data['recipes'];
@@ -16,11 +18,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FetchRecipes();
     return Scaffold(
-      body: Column(
-        children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
-      ),
+      body: FutureBuilder<List<dynamic>>(
+        future: FetchRecipes(), 
+        builder: (context, snapshop) {
+          final recipes = snapshop.data ?? [];
+          return ListView.builder(
+            itemCount: recipes!.length,
+            itemBuilder: (context, index){
+              return _RecipesCard(context, recipes[index]);
+            });
+        }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
         child: Icon(Icons.add, color: Colors.white,),
@@ -47,10 +55,10 @@ class HomeScreen extends StatelessWidget {
     );  
   }
 
-  Widget _RecipesCard(BuildContext context) {
+  Widget _RecipesCard(BuildContext context, dynamic recipe) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeName: 'Milanesa Napolitana')));
+        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeName: recipe['name'])));
       },
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -65,10 +73,11 @@ class HomeScreen extends StatelessWidget {
                     width: 100,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image(
-                          image: AssetImage('assets/images/Perfil-LinkedIn-E.jpg'),
-                          fit: BoxFit.fitHeight,
-                        ))),
+                        child: Image.network(recipe['image_link'], 
+                          fit: BoxFit.cover
+                        )
+                      )
+                    ),
                 SizedBox(
                   width: 26,
                 ),
@@ -77,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Milanesa Napolitana',
+                      recipe['name'],
                       style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
                     ),
                     SizedBox(
@@ -91,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 4,
                     ),
-                    Text('Emmanuel Córdoba',
+                    Text(recipe['author'],
                         style: TextStyle(fontSize: 14, fontFamily: 'Quicksand')),
                   ],
                 )
