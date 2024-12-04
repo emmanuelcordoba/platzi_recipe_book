@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
   Widget _RecipesCard(BuildContext context, dynamic recipe) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeName: recipe.name)));
+        Navigator.push(context, MaterialPageRoute(builder: (builder) => RecipeDetail(recipeData: recipe)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8),

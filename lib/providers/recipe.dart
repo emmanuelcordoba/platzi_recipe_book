@@ -8,10 +8,10 @@ class RecipeProvider extends ChangeNotifier {
 
   bool isLoading = false;
   List<Recipe> recipes = [];
+  List<Recipe> favorites = [];
 
 
   Future<void> fetchRecipes() async {
-
     isLoading = true;
     notifyListeners();
 
@@ -31,12 +31,35 @@ class RecipeProvider extends ChangeNotifier {
         recipes = [];
       }
     } catch (e) {
-      print('Error in request');
+      print('Error in request $e');
       recipes = [];
     } finally {
       isLoading = false;
       notifyListeners();
     }
     
-  } 
+  }
+
+  Future<void> toggleFavoriteStatus(Recipe recipe) async {
+    final isFavorite = favorites.contains(recipe);
+    final url = Uri.parse('http://localhost:3001/favorites');
+
+    try {
+      final response = isFavorite ? 
+        await http.delete(url, body:  json.encode({"id": recipe.id}))
+        : await http.post(url, body: json.encode({"id": recipe.id}));
+      if(response.statusCode == 200)
+      {
+        if(isFavorite) {
+          favorites.remove(recipe);
+        } else {
+          favorites.add(recipe);
+        }
+      } else {
+        throw Exception('Failed to update favorite recipes');
+      }
+    } catch (e) {
+      print('Error updating favorite status $e');
+    }
+  }
 }
