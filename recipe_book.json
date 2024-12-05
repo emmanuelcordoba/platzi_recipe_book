@@ -48,7 +48,7 @@
       "responses": [
         {
           "uuid": "37fccdfb-9b23-455a-b394-4e8e07bdfd6d",
-          "body": "{\n  \"recipes\": [\n    {\n      \"id\": 1,\n      \"name\": \"Espaguetis a la Carbonara\",\n      \"author\": \"Chef María López\",\n      \"image_link\": \"https://static.platzi.com/media/uploads/Espagueti_2619917177.jpeg\",\n      \"recipe\": [\n        \"Cuece los espaguetis en agua con sal hasta que estén al dente.\",\n        \"En un bol, bate huevos y añade queso parmesano rallado.\",\n        \"Fríe panceta en una sartén hasta que esté crujiente.\",\n        \"Mezcla los espaguetis con la panceta y la mezcla de huevo y queso.\",\n        \"Sirve con más queso y pimienta negra al gusto.\"\n      ]\n    }\n  ]\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "",

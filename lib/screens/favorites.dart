@@ -23,7 +23,7 @@ class FavoritesScreen extends StatelessWidget {
             itemCount: favorites.length,
             itemBuilder: (context, index) {
               final recipe = favorites[index];
-              FavoriteRecipeCard(recipe: recipe);
+              return FavoriteRecipeCard(recipe: recipe);
             });
         },
       ),

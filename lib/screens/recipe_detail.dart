@@ -21,8 +21,8 @@ class _RecipeDetailState extends State<RecipeDetail> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     isFavorite = Provider.of<RecipeProvider>(context, listen: false)
-      .favorites
-      .contains(widget.recipeData);
+        .favorites
+        .contains(widget.recipeData);
   }
   
   @override
@@ -35,7 +35,7 @@ class _RecipeDetailState extends State<RecipeDetail> {
             onPressed: () {
               Navigator.pop(context);
             }, 
-            icon: Icon(Icons.arrow_back, color: Colors.white,
+            icon: const Icon(Icons.arrow_back, color: Colors.white,
           )
         ),
         actions: [
