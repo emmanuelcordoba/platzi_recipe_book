@@ -48,29 +48,33 @@ class FavoriteRecipeCard extends StatelessWidget {
           builder: (context) => RecipeDetail(recipeData: recipe)
         ));
       },
-      child: Card(
-        color: Colors.white,
-        child: Row(
-            children: [
-              SizedBox(
-                height: 125,
-                width: 125,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(recipe.imageLink, 
-                    fit: BoxFit.cover
+      child: Semantics(
+        label: 'Tarjeta de recetas',
+        hint: 'Toca para ver dettale de la receta de ${recipe.name}',
+        child: Card(
+          color: Colors.white,
+          child: Row(
+              children: [
+                SizedBox(
+                  height: 125,
+                  width: 125,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(recipe.imageLink, 
+                      fit: BoxFit.cover
+                    )
                   )
-                )
-              ),
-              const SizedBox(width: 14,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                Text(recipe.name),
-                Text("by ${recipe.author}")
-              ],),
-            ],
-          ),
+                ),
+                const SizedBox(width: 14,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Text(recipe.name),
+                  Text("by ${recipe.author}")
+                ],),
+              ],
+            ),
+        ),
       ),
     );
   }
