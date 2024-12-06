@@ -3,6 +3,7 @@ import 'package:platzi_recipe_book/models/recipe.dart';
 import 'package:platzi_recipe_book/providers/recipe.dart';
 import 'package:platzi_recipe_book/screens/recipe_detail.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
@@ -17,7 +18,7 @@ class FavoritesScreen extends StatelessWidget {
           final favorites = recipeProvider.favorites;
           if(favorites.isEmpty)
           {
-            return Center(child: Text('No hay favoritos'));
+            return Center(child: Text(AppLocalizations.of(context)!.noRecipes));
           }
           return Padding(
             padding: const EdgeInsets.all(8.0),
