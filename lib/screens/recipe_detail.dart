@@ -46,8 +46,21 @@ class _RecipeDetailState extends State<RecipeDetail> {
                 isFavorite = !isFavorite;
               });
             },
-            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
-            color: Colors.white,
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(
+                  scale: animation,
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                key: ValueKey<bool>(isFavorite),
+                color: Colors.red,
+              ),
+            ),
+            //color: Colors.white,
           )
         ],
       ),
