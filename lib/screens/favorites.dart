@@ -19,12 +19,15 @@ class FavoritesScreen extends StatelessWidget {
           {
             return Center(child: Text('No hay favoritos'));
           }
-          return ListView.builder(
-            itemCount: favorites.length,
-            itemBuilder: (context, index) {
-              final recipe = favorites[index];
-              return FavoriteRecipeCard(recipe: recipe);
-            });
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+              itemCount: favorites.length,
+              itemBuilder: (context, index) {
+                final recipe = favorites[index];
+                return FavoriteRecipeCard(recipe: recipe);
+              }),
+          );
         },
       ),
     );
@@ -46,10 +49,27 @@ class FavoriteRecipeCard extends StatelessWidget {
       },
       child: Card(
         color: Colors.white,
-        child: Column(children: [
-          Text(recipe.name),
-          Text(recipe.author)
-        ],),
+        child: Row(
+            children: [
+              SizedBox(
+                height: 125,
+                width: 125,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(recipe.imageLink, 
+                    fit: BoxFit.cover
+                  )
+                )
+              ),
+              const SizedBox(width: 14,),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Text(recipe.name),
+                Text("by ${recipe.author}")
+              ],),
+            ],
+          ),
       ),
     );
   }
